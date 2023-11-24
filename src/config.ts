@@ -12,10 +12,15 @@ interface ApiConfig {
   API_URL: string;
 }
 
+interface APPConfig {
+  name: string;
+}
+
 interface Config {
   google: GoogleConfig;
   facebook: FacebookConfig;
   api: ApiConfig;
+  app: APPConfig;
 }
 
 const config: Config = {
@@ -27,9 +32,12 @@ const config: Config = {
   facebook: {
     APP_ID: "",
   },
-  api: {
-    API_URL: "https://api-node.themesbrand.website",
+  app: {
+    name: 'App Name In src/config.js'
   },
+  api: {
+    API_URL: "http://localhost:3333",
+  }
 };
 
 export default config;

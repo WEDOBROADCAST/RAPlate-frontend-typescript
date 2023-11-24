@@ -6,26 +6,28 @@ import { Row, Col, Alert, Card, CardBody, Container, FormFeedback, Input, Label,
 import { useSelector, useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
-import withRouter from "../../Components/Common/withRouter";
 
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // action
-import { userForgetPassword } from "../../slices/thunks";
+import { userForgetPassword } from "../../store/actions";
 
 // import images
 // import profile from "../../assets/images/bg.png";
 import logoLight from "../../assets/images/logo-light.png";
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
-import { createSelector } from "reselect";
 
-const ForgetPasswordPage = (props : any) => {
-  const dispatch : any = useDispatch();
+import withRouter from "../../Components/Common/withRouter";
+import { getUserSession, requestResetPassword } from "../../helpers/api";
+import { ToastContainer, toast } from "react-toastify";
+import config from "../../config";
 
-  const validation : any = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
+const ForgetPasswordPage = props => {
+  const dispatch = useDispatch();
+
+  const validation = useFormik({
     enableReinitialize: true,
 
     initialValues: {
@@ -34,29 +36,30 @@ const ForgetPasswordPage = (props : any) => {
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
     }),
-    onSubmit: (values) => {
-      dispatch(userForgetPassword(values, props.history));
+    onSubmit: async (values) => {
+      console.log(values)
+      const response = await requestResetPassword({ email: values.email });
+
+      const res = await response.json();
+
+      if (response.status === 200) {
+        toast.success(res.message, { autoClose: 3000 });
+      } else {
+        toast.error(res.message, { autoClose: 3000 });
+      }
     }
   });
 
+  const { forgetError, forgetSuccessMsg } = useSelector(state => ({
+    forgetError: state.ForgetPassword.forgetError,
+    forgetSuccessMsg: state.ForgetPassword.forgetSuccessMsg,
+  }));
 
-  const selectLayoutState = (state : any) => state.ForgetPassword;
-  const selectLayoutProperties = createSelector(
-    selectLayoutState,
-    (state) => ({
-      forgetError: state.forgetError,
-      forgetSuccessMsg: state.forgetSuccessMsg,
-    })
-  );
-  // Inside your component
-  const {
-    forgetError, forgetSuccessMsg
-  } = useSelector(selectLayoutProperties);
-
-  document.title = "Reset Password | Velzon - React Admin & Dashboard Template";
+  document.title = "Reset Password | React Dashboard Titlte";
   return (
     <ParticlesAuth>
-      <div className="auth-page-content mt-lg-5">
+      <ToastContainer />
+      <div className="auth-page-content">
 
         <Container>
           <Row>
@@ -67,7 +70,6 @@ const ForgetPasswordPage = (props : any) => {
                     <img src={logoLight} alt="" height="20" />
                   </Link>
                 </div>
-                <p className="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
               </div>
             </Col>
           </Row>
@@ -79,13 +81,20 @@ const ForgetPasswordPage = (props : any) => {
                 <CardBody className="p-4">
                   <div className="text-center mt-2">
                     <h5 className="text-primary">Forgot Password?</h5>
-                    <p className="text-muted">Reset password with velzon</p>
+                    <p className="text-muted">Reset password with {config.app.name}</p>
 
-                    <i className="ri-mail-send-line display-5 text-success mb-3"></i>
+                    <lord-icon
+                      src="https://cdn.lordicon.com/rhvddzym.json"
+                      trigger="loop"
+                      colors="primary:#0ab39c"
+                      className="avatar-xl"
+                      style={{ width: "120px", height: "120px" }}
+                    >
+                    </lord-icon>
 
                   </div>
 
-                  <Alert className="border-0 alert-warning text-center mb-2 mx-2" role="alert">
+                  <Alert className="alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
                     Enter your email and instructions will be sent to you!
                   </Alert>
                   <div className="p-2">
