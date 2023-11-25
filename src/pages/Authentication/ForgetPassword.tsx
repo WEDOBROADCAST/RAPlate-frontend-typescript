@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import React from "react";
 import { Row, Col, Alert, Card, CardBody, Container, FormFeedback, Input, Label, Form } from "reactstrap";
 
 //redux
@@ -12,7 +11,6 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // action
-import { userForgetPassword } from "../../store/actions";
 
 // import images
 // import profile from "../../assets/images/bg.png";
@@ -20,11 +18,12 @@ import logoLight from "../../assets/images/logo-light.png";
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 
 import withRouter from "../../Components/Common/withRouter";
-import { getUserSession, requestResetPassword } from "../../helpers/api";
+import { requestResetPassword } from "../../helpers/api";
 import { ToastContainer, toast } from "react-toastify";
 import config from "../../config";
+import { Props } from "simplebar-react";
 
-const ForgetPasswordPage = props => {
+const ForgetPasswordPage: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
 
   const validation = useFormik({
@@ -37,7 +36,6 @@ const ForgetPasswordPage = props => {
       email: Yup.string().required("Please Enter Your Email"),
     }),
     onSubmit: async (values) => {
-      console.log(values)
       const response = await requestResetPassword({ email: values.email });
 
       const res = await response.json();
@@ -50,7 +48,7 @@ const ForgetPasswordPage = props => {
     }
   });
 
-  const { forgetError, forgetSuccessMsg } = useSelector(state => ({
+  const { forgetError, forgetSuccessMsg } = useSelector((state: any) => ({
     forgetError: state.ForgetPassword.forgetError,
     forgetSuccessMsg: state.ForgetPassword.forgetSuccessMsg,
   }));
@@ -82,15 +80,6 @@ const ForgetPasswordPage = props => {
                   <div className="text-center mt-2">
                     <h5 className="text-primary">Forgot Password?</h5>
                     <p className="text-muted">Reset password with {config.app.name}</p>
-
-                    <lord-icon
-                      src="https://cdn.lordicon.com/rhvddzym.json"
-                      trigger="loop"
-                      colors="primary:#0ab39c"
-                      className="avatar-xl"
-                      style={{ width: "120px", height: "120px" }}
-                    >
-                    </lord-icon>
 
                   </div>
 
@@ -154,8 +143,9 @@ const ForgetPasswordPage = props => {
   );
 };
 
+
 ForgetPasswordPage.propTypes = {
   history: PropTypes.object,
-};
+} as React.ValidationMap<Props>;
 
-export default withRouter(ForgetPasswordPage);
+export default ForgetPasswordPage;

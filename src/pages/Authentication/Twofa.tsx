@@ -62,14 +62,14 @@ const Twofa = () => {
                                     <div className="text-center mt-2">
                                         <h5 className="text-primary">Enter six digits code from the application </h5>
                                         <p className="text-muted"> open your authenticator app and fill the code bellow</p>
-
+                                        {/* 
                                         <lord-icon
                                             src="https://cdn.lordicon.com/avcjklpr.json"
                                             trigger="loop"
                                             colors="primary:#0ab39c"
                                             className="avatar-xl"
                                             style={{ width: "120px", height: "120px" }}>
-                                        </lord-icon>
+                                        </lord-icon> */}
                                     </div>
 
                                     <div className="p-2">
