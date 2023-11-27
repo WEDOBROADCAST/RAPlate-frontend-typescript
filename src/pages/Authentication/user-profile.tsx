@@ -1,185 +1,105 @@
-import React, { useState, useEffect } from "react";
-import { isEmpty } from "lodash";
-
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Alert,
-  CardBody,
-  Button,
-  Label,
-  Input,
-  FormFeedback,
-  Form,
-} from "reactstrap";
-
-// Formik Validation
-import * as Yup from "yup";
-import { useFormik } from "formik";
-
-//redux
-import { useSelector, useDispatch } from "react-redux";
-
-import avatar from "../../assets/images/users/avatar-1.jpg";
-// actions
-import { editProfile, resetProfileFlag } from "../../slices/thunks";
-import { createSelector } from "reselect";
-
-const UserProfile = () => {
-  const dispatch: any = useDispatch();
-
-  const [email, setemail] = useState("admin@gmail.com");
-  const [idx, setidx] = useState("1");
-
-  const [userName, setUserName] = useState("Admin");
+import React, { useEffect, useState } from 'react';
+import { Card, CardBody, Col, Container, Input, Row } from 'reactstrap';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { getProfilePhoto, getUserSession, userDetail } from '../../helpers/api';
+import progileBg from '../../assets/images/profile-bg.jpg';
 
 
 
-  const selectLayoutState = (state: any) => state.Profile;
-  const userprofileData = createSelector(
-    selectLayoutState,
-    (state) => ({
-      user: state.user,
-      success: state.success,
-      error: state.error
-    })
-  );
-  // Inside your component
-  const {
-    user, success, error
-  } = useSelector(userprofileData);
+const UpdateProfile = () => {
+
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    profile_photo: '',
+    id: '',
+  })
+
+
+
+  const getUser = async () => {
+    const user = await getUserSession();
+
+    const response = await userDetail(user.data.id);
+
+    if (response.status === 200) {
+      const data = await response.json()
+
+      setUserData({
+        name: data.user.email,
+        id: data.user.id,
+        profile_photo: data.user.profile_photo,
+        email: data.user.email,
+        password : ''
+      });
+    }
+    else {
+      toast("Data not found", { position: "top-center", hideProgressBar: true, className: 'bg-danger text-white' })
+    }
+
+  };
 
 
   useEffect(() => {
-    if (sessionStorage.getItem("authUser")) {
-      const storedUser = sessionStorage.getItem("authUser");
-      if (storedUser) {
-        const obj = JSON.parse(storedUser);
+    getUser();
+  }, [id])
 
-        if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-
-          obj.displayName = user.username;
-          setUserName(obj.displayName || "Admin");
-          setemail(obj.email || "admin@gmail.com");
-          setidx(obj.uid || '1');
-        } else if (process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-          process.env.REACT_APP_DEFAULTAUTH === "jwt"
-        ) {
-          if (!isEmpty(user)) {
-            obj.data.first_name = user.first_name;
-            sessionStorage.removeItem("authUser");
-            sessionStorage.setItem("authUser", JSON.stringify(obj));
-          }
-
-          setUserName(obj.data.first_name || "Admin");
-          setemail(obj.data.email || "admin@gmail.com");
-          setidx(obj.data._id || "1");
-
-        }
-        setTimeout(() => {
-          dispatch(resetProfileFlag());
-        }, 3000);
-      }
-    }
-  }, [dispatch, user]);
-
-
-
-  const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
-
-    initialValues: {
-      first_name: userName || 'Admin',
-      idx: idx || '',
-    },
-    validationSchema: Yup.object({
-      first_name: Yup.string().required("Please Enter Your UserName"),
-    }),
-    onSubmit: (values) => {
-      dispatch(editProfile(values));
-    }
-  });
-
-  document.title = "Profile | Velzon - React Admin & Dashboard Template";
+  document.title = "";
   return (
     <React.Fragment>
-      <div className="page-content mt-lg-5">
+      <div className="page-content">
         <Container fluid>
-          <Row>
-            <Col lg="12">
-              {error && error ? <Alert color="danger">{error}</Alert> : null}
-              {success ? <Alert color="success">Username Updated To {userName}</Alert> : null}
+          <div className="position-relative mx-n4 mt-n4">
+            <div className="profile-wid-bg profile-setting-img">
+              <img src={progileBg} className="profile-wid-img" alt="" />
+              <div className="overlay-content">
+                <div className="text-end p-3">
+                  <div className="p-0 ms-auto rounded-circle profile-photo-edit">
+                    <Input id="profile-foreground-img-file-input" type="file"
+                      className="profile-foreground-img-file-input" />
 
-              <Card>
-                <CardBody>
-                  <div className="d-flex">
-                    <div className="mx-3">
-                      <img
-                        src={avatar}
-                        alt=""
-                        className="avatar-md rounded-circle img-thumbnail"
-                      />
-                    </div>
-                    <div className="flex-grow-1 align-self-center">
-                      <div className="text-muted">
-                        <h5>{userName || "Admin"}</h5>
-                        <p className="mb-1">Email Id : {email}</p>
-                        <p className="mb-0">Id No : #{idx}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <Row>
+            <Col xxl={3}>
+              <Card className="mt-n5">
+                <CardBody className="p-4">
+                  <div className="text-center">
+                    <div className="profile-user position-relative d-inline-block mx-auto  mb-4">
+                      <img src={getProfilePhoto(userData.profile_photo)}
+                        className="rounded-circle avatar-xl img-thumbnail user-profile-image"
+                        alt="user-profile" />
+                      <div className="avatar-xs p-0 rounded-circle profile-photo-edit">
+                        <Input id="profile-img-file-input" type="file"
+                          className="profile-img-file-input" />
+
                       </div>
                     </div>
+                    <h5 className="fs-16 mb-1">{userData.name}</h5>
+                    <p className="text-muted mb-0">{userData.email}</p>
+
+                    <Link to={`/profile/update`} className="btn btn-success mt-3">Update Profile</Link>
                   </div>
                 </CardBody>
               </Card>
+
+
             </Col>
+
           </Row>
-
-          <h4 className="card-title mb-4">Change User Name</h4>
-
-          <Card>
-            <CardBody>
-              <Form
-                className="form-horizontal"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  validation.handleSubmit();
-                  return false;
-                }}
-              >
-                <div className="form-group">
-                  <Label className="form-label">User Name</Label>
-                  <Input
-                    name="first_name"
-                    // value={name}
-                    className="form-control"
-                    placeholder="Enter User Name"
-                    type="text"
-                    onChange={validation.handleChange}
-                    onBlur={validation.handleBlur}
-                    value={validation.values.first_name || ""}
-                    invalid={
-                      validation.touched.first_name && validation.errors.first_name ? true : false
-                    }
-                  />
-                  {validation.touched.first_name && validation.errors.first_name ? (
-                    <FormFeedback type="invalid">{validation.errors.first_name}</FormFeedback>
-                  ) : null}
-                  <Input name="idx" value={idx} type="hidden" />
-                </div>
-                <div className="text-center mt-4">
-                  <Button type="submit" color="danger">
-                    Update User Name
-                  </Button>
-                </div>
-              </Form>
-            </CardBody>
-          </Card>
         </Container>
       </div>
-    </React.Fragment>
+    </React.Fragment >
   );
 };
 
-export default UserProfile;
+export default UpdateProfile;

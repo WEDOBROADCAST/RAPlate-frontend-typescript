@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, CardBody, CardHeader, Col, Container, Input, Label, Modal, ModalBody, ModalHeader, Nav, NavItem, NavLink, Row, TabContent, TabPane } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Col, Container, Input, Label, Modal, ModalBody, Nav, NavItem, NavLink, Row, TabContent, TabPane } from 'reactstrap';
 
-import BreadCrumb from '../../Components/Common/BreadCrumb';
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { Formik, Field, ErrorMessage, useFormik, Form } from 'formik';
+import { Formik, Field, ErrorMessage, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { changeProfilePhoto, disable2fa, enable2fa, getProfilePhoto, getUserSession, updateUser, updateUserPassword, userDetail, verify2fa } from '../../helpers/api';
-import avatar from "../../assets/images/users/avatar-1.jpg";
 import classnames from "classnames";
-import Flatpickr from "react-flatpickr";
 import progileBg from '../../assets/images/profile-bg.jpg';
-import avatar1 from '../../assets/images/users/avatar-1.jpg';
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -26,7 +22,7 @@ const validationSchemaPass = Yup.object().shape({
     new_password: Yup.string().required('New Password is required'),
     confirm_password: Yup.string()
         .required('Confirm Password is required')
-        .oneOf([Yup.ref('new_password'), null], 'Confirm Password must match the New Password'),
+        .oneOf([Yup.ref('new_password'), ''], 'Confirm Password must match the New Password'),
 });
 
 
@@ -34,11 +30,13 @@ const validationSchemaCode = Yup.object().shape({
     code: Yup.string().required('Code is required'),
 });
 
+declare const window: any;
 
 const UpdateProfile = () => {
 
     const navigate = useNavigate();
     const { id } = useParams();
+
 
     const [userData, setUserData] = useState({
         name: '',
@@ -76,7 +74,7 @@ const UpdateProfile = () => {
 
         setQrLinkLoaded(false)
         setModalShowQr(true)
-        const generates = await enable2fa();
+        const generates = await enable2fa({});
 
 
         if (generates.status !== 200) {
@@ -90,7 +88,7 @@ const UpdateProfile = () => {
 
     const handleDisable2fa = async () => {
 
-        const disable = await disable2fa();
+        const disable = await disable2fa({});
 
         if (disable.status !== 200) {
             toast.error("Server error", { autoClose: 3000 });
@@ -99,7 +97,7 @@ const UpdateProfile = () => {
         await getUser()
     }
 
-    const handleSubmitCode = async (values, { setSubmitting }) => {
+    const handleSubmitCode = async (values: any, { setSubmitting }: any) => {
 
         const save = await verify2fa(values);
 
@@ -116,7 +114,7 @@ const UpdateProfile = () => {
 
     const [activeTab, setActiveTab] = useState("1");
 
-    const tabChange = (tab) => {
+    const tabChange = (tab: React.SetStateAction<string>) => {
         if (activeTab !== tab) setActiveTab(tab);
     };
 
@@ -141,7 +139,8 @@ const UpdateProfile = () => {
                 code: data.user.code,
                 enable2fa: data.user.enable2fa,
                 email: data.user.email,
-                profile_photo: data.user.profile_photo
+                profile_photo: data.user.profile_photo,
+                password: '',
             });
         }
         else {
@@ -151,7 +150,7 @@ const UpdateProfile = () => {
     };
 
 
-    const handleSubmit = async (values, { setSubmitting }) => {
+    const handleSubmit = async (values: any, { setSubmitting }: any) => {
 
 
         const user = await getUserSession();
@@ -167,14 +166,14 @@ const UpdateProfile = () => {
     };
 
 
-    const handleFileChange = async (event) => {
+    const handleFileChange = async (event: any) => {
         const file = event.target.files[0];
 
         await changeProfilePhoto(file)
         await getUser()
     };
 
-    const handleSubmitResetPass = async (values, { setSubmitting }) => {
+    const handleSubmitResetPass = async (values: any, { setSubmitting }: any) => {
 
         const user = await getUserSession();
 
@@ -427,12 +426,12 @@ const UpdateProfile = () => {
                                                 {qrLinkIsLoaded ?
                                                     <img src={qrLink} /> :
                                                     <div>
-                                                        <lord-icon
+                                                        {/*     <lord-icon
                                                             src="https://cdn.lordicon.com/avcjklpr.json"
                                                             trigger="loop"
                                                             colors="primary:#121331,secondary:#08a88a"
                                                             style={{ width: "120px", height: "120px" }}>
-                                                        </lord-icon>
+                                                        </lord-icon> */}
                                                         <div>
                                                             Please wait loading QR..
                                                         </div>
@@ -489,10 +488,10 @@ const UpdateProfile = () => {
                                                     <div className="flex-shrink-0 ms-sm-3">
                                                         {userData.enable2fa === '1' ?
                                                             <Link onClick={handleDisable2fa}
-                                                                className="btn btn-sm btn-danger">Disable Two-facor
+                                                                className="btn btn-sm btn-danger" to={''}>Disable Two-facor
                                                                 Authentication</Link> :
                                                             <Link onClick={handleEnable2fa}
-                                                                className="btn btn-sm btn-primary">Enable Two-facor
+                                                                className="btn btn-sm btn-primary" to={''}>Enable Two-facor
                                                                 Authentication</Link>}
 
                                                     </div>

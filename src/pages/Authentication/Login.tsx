@@ -104,7 +104,6 @@ const Login = (props: any) => {
                                             <img src={logoLight} alt="" height="20" />
                                         </Link>
                                     </div>
-                                    <p className="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
                                 </div>
                             </Col>
                         </Row>
@@ -189,10 +188,10 @@ const Login = (props: any) => {
                                         </div>
                                     </CardBody>
                                 </Card>
-
+                                {/* 
                                 <div className="mt-4 text-center">
                                     <p className="mb-0">Don't have an account ? <Link to="/register" className="fw-semibold text-primary text-decoration-underline"> Signup </Link> </p>
-                                </div>
+                                </div> */}
 
                             </Col>
                         </Row>

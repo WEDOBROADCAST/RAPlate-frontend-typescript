@@ -21,17 +21,17 @@ import { changeSidebarVisibility } from '../slices/thunks';
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from 'reselect';
 
-const Header = ({ onChangeLayoutMode, layoutModeType, headerClass } : any) => {
-    const dispatch : any = useDispatch();
+const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }: any) => {
+    const dispatch: any = useDispatch();
 
 
     const selectDashboardData = createSelector(
         (state) => state.Layout.sidebarVisibilitytype,
         (sidebarVisibilitytype) => sidebarVisibilitytype
-      );
+    );
     // Inside your component
     const sidebarVisibilitytype = useSelector(selectDashboardData);
-    
+
 
     const [search, setSearch] = useState<boolean>(false);
     const toogleSearch = () => {
@@ -136,13 +136,13 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass } : any) => {
                             </Dropdown>
 
                             {/* LanguageDropdown */}
-                            <LanguageDropdown />
+                            {/* <LanguageDropdown /> */}
 
                             {/* WebAppsDropdown */}
-                            <WebAppsDropdown />
+                            {/* <WebAppsDropdown /> */}
 
                             {/* MyCartDropdwon */}
-                            <MyCartDropdown />
+                            {/* <MyCartDropdown /> */}
 
                             {/* FullScreenDropdown */}
                             <FullScreenDropdown />
@@ -154,7 +154,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass } : any) => {
                             />
 
                             {/* NotificationDropdown */}
-                            <NotificationDropdown />
+                            {/* <NotificationDropdown /> */}
 
                             {/* ProfileDropdown */}
                             <ProfileDropdown />

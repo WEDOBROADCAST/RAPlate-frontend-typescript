@@ -77,7 +77,7 @@ const Twofa = () => {
                                             <div className="mb-4">
                                                 <Label className="form-label">Code</Label>
                                                 <Input
-                                                    type="code"
+                                                    type="text"
                                                     className="form-control"
                                                     id="code"
                                                     placeholder="Enter Code"

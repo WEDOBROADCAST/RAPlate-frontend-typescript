@@ -6,27 +6,40 @@ import { useSelector } from 'react-redux';
 
 //import images
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
+import { getProfilePhoto } from 'helpers/api';
 
 const ProfileDropdown = () => {
 
     const profiledropdownData = createSelector(
-        (state : any) => state.Profile.user,
+        (state: any) => state.Profile.user,
         (user) => user
-      );
+    );
     // Inside your component
     const user = useSelector(profiledropdownData);
+    const [profilePhoto, setProfilePhoto] = useState('');
 
-    const [userName, setUserName] = useState("Admin");
+
+    interface Userdata {
+        name: string,
+        email: string
+    }
+    const [userData, setUserdata] = useState<Userdata>({
+        name: '',
+        email: ''
+    });
 
     useEffect(() => {
-        const authUSer : any = sessionStorage.getItem("authUser");
-        if (authUSer) {
-            const obj : any = JSON.parse(authUSer);
-            setUserName(process.env.REACT_APP_DEFAULTAUTH === "fake" ? obj.username === undefined ? user.first_name ? user.first_name : obj.data.first_name : "Admin" || "Admin" :
-                process.env.REACT_APP_DEFAULTAUTH === "firebase" ? obj.email && obj.email : "Admin"
-            );
+        const authUserString = sessionStorage.getItem("authUser");
+
+        if (authUserString !== null) {
+            const obj = JSON.parse(authUserString);
+            setUserdata(obj.data);
+            setProfilePhoto(obj.data.profile_photo)
+
         }
-    }, [userName, user]);
+    }, []);
+
+
 
     //Dropdown Toggle
     const [isProfileDropdown, setIsProfileDropdown] = useState(false);
@@ -38,55 +51,22 @@ const ProfileDropdown = () => {
             <Dropdown isOpen={isProfileDropdown} toggle={toggleProfileDropdown} className="ms-sm-3 header-item topbar-user">
                 <DropdownToggle tag="button" type="button" className="btn">
                     <span className="d-flex align-items-center">
-                        <img className="rounded-circle header-profile-user" src={avatar1}
+                        <img className="rounded-circle header-profile-user" src={getProfilePhoto(profilePhoto)}
                             alt="Header Avatar" />
                         <span className="text-start ms-xl-2">
-                            <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text"> {userName || "Admin"}</span>
-                            <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">Founder</span>
+                            <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{userData.name}</span>
+                            <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{userData.email}</span>
                         </span>
+
+
                     </span>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-end">
-                    <h6 className="dropdown-header">Welcome {userName}!</h6>
+                    <h6 className="dropdown-header">Welcome {userData.name}!</h6>
                     <DropdownItem className='p-0'>
                         <Link to="/profile" className="dropdown-item">
                             <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
                             <span className="align-middle">Profile</span>
-                        </Link>
-                    </DropdownItem>
-                    <DropdownItem className='p-0'>
-                        <Link to="/apps-chat" className="dropdown-item">
-                            <i className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span
-                                className="align-middle">Messages</span>
-                        </Link>
-                    </DropdownItem>
-                    <DropdownItem className='p-0'>
-                        <Link to={"#"} className="dropdown-item">
-                            <i className="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span
-                                className="align-middle">Taskboard</span>
-                        </Link>
-                    </DropdownItem>
-                    <DropdownItem className='p-0'>
-                        <Link to="/pages-faqs" className="dropdown-item">
-                            <i
-                                className="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span
-                                    className="align-middle">Help</span>
-                        </Link>
-                    </DropdownItem>
-                    <div className="dropdown-divider"></div>
-                    <DropdownItem className='p-0'>
-                        <Link to="/pages-profile" className="dropdown-item">
-                            <i
-                                className="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span
-                                    className="align-middle">Balance : <b>$5971.67</b></span>
-                        </Link>
-                    </DropdownItem >
-                    <DropdownItem className='p-0'>
-                        <Link to="/pages-profile-settings" className="dropdown-item">
-                            <span
-                                className="badge bg-success-subtle text-success mt-1 float-end">New</span><i
-                                    className="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
-                                        className="align-middle">Settings</span>
                         </Link>
                     </DropdownItem>
                     <DropdownItem className='p-0'>
