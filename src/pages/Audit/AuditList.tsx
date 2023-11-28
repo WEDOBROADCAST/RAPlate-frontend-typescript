@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { listAudit } from '../../helpers/api';
 import { $can } from '../../helpers/permission';
 import moment from 'moment';
-import AuditData from 'models/AppModels';
+import { AuditData } from 'models/AppModels';
 
 const AuditList = () => {
 

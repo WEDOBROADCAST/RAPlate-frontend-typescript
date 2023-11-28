@@ -1,4 +1,4 @@
-export default interface AuditData {
+export interface AuditData {
     id?: string,
     name: string,
     ip: string
@@ -8,5 +8,18 @@ export default interface AuditData {
     url: string,
     old_data: any[string],
     new_data: any[string],
+    created_at?: string,
+}
+
+interface RoleData {
+    id?: string,
+    name: string,
+}
+
+export interface UserData {
+    id: number,
+    name: string,
+    email: string,
+    roles: RoleData[],
     created_at?: string,
 }

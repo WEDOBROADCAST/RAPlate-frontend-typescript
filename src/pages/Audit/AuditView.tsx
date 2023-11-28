@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { auditDetail } from '../../helpers/api';
-import AuditData from 'models/AppModels';
+import { AuditData } from 'models/AppModels';
 
 
 

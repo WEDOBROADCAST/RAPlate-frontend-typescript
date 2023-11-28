@@ -80,7 +80,7 @@ export async function userDetail(id: string | undefined) {
     return await apiRequest(`${config.api.API_URL}/user/${id}/show`, 'GET');
 }
 
-export async function userDelete(id: string) {
+export async function userDelete(id: number) {
     return await apiRequest(`${config.api.API_URL}/user/${id}/delete`, 'DELETE');
 }
 

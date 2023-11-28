@@ -17,10 +17,17 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
+interface UserData {
+  name: string,
+  email: string,
+  password?: string,
+  id?: number | string,
+}
+
 const UserAdd = () => {
 
   const navigate = useNavigate();
-  const initialValues = {
+  const initialValues: UserData = {
     name: '',
     email: '',
     password: '',
@@ -35,22 +42,19 @@ const UserAdd = () => {
     const role = await response.json()
 
     if (response.status === 200) {
-
-      console.log(role.data)
-      const mapping = role.data.map((role) => {
+      const mapping = role.data.map((role: any) => {
         return {
           label: role.name,
           value: role.id,
         }
       });
-      console.log(mapping)
       setRole(mapping)
     }
   }
 
 
 
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+  const handleSubmit = async (values: any, { setSubmitting, resetForm }: any) => {
     values.role = values.role.value
 
     const save = await createUser(values);
@@ -125,11 +129,11 @@ const UserAdd = () => {
                           <Label for="email">Role</Label>
                           <Field
                             name="role"
-                            component={({ field, form }) => (
+                            component={({ field, form }: any) => (
                               <Select
                                 {...field}
                                 options={roleList}
-                                onChange={option => form.setFieldValue(field.name, option)}
+                                onChange={(option: any) => form.setFieldValue(field.name, option)}
                               />
                             )}
                           />

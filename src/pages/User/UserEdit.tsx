@@ -17,6 +17,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string(),
 });
 
+declare const window: any
 
 const UserEdit = () => {
   const navigate = useNavigate();
@@ -39,8 +40,7 @@ const UserEdit = () => {
 
     if (response.status === 200) {
 
-      console.log(role.data)
-      const mapping = role.data.map((role) => {
+      const mapping = role.data.map((role: { name: string; id: string; }) => {
         return {
           label: role.name,
           value: role.id,
@@ -77,7 +77,7 @@ const UserEdit = () => {
     getRoles()
   }, [id]);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values: { role: any }, { setSubmitting }: any) => {
     values.role = values.role.value
     const save = await updateUser(id, values);
 
@@ -139,11 +139,11 @@ const UserEdit = () => {
                           <Label for="email">Role</Label>
                           <Field
                             name="role"
-                            component={({ field, form }) => (
+                            component={({ field, form }: any) => (
                               <Select
                                 {...field}
                                 options={roleList}
-                                onChange={option => form.setFieldValue(field.name, option)}
+                                onChange={(option: any) => form.setFieldValue(field.name, option)}
                               />
                             )}
                           />

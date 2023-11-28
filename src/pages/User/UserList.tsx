@@ -8,16 +8,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import DeleteModal from '../../Components/Common/DeleteModal';
 import { listUser, userDelete } from '../../helpers/api';
 import { $can } from '../../helpers/permission';
-
+import { UserData } from 'models/AppModels'
 
 const UserList = () => {
 
   const navigate = useNavigate();
 
-  const actionEdit = (id) => {
+  const actionEdit = (id: number) => {
     navigate(`/user/${id}/edit`);
   };
-  const actionView = (id) => {
+  const actionView = (id: number) => {
     navigate(`/user/${id}/view`);
   };
 
@@ -25,7 +25,7 @@ const UserList = () => {
 
   //delete Conatct
   const [deleteModal, setDeleteModal] = useState(false);
-  const [selectedId, setSelectedId] = useState('');
+  const [selectedId, setSelectedId] = useState(1);
 
   const handleDelete = async () => {
 
@@ -35,13 +35,13 @@ const UserList = () => {
     if (response.status === 200) {
       toast.success("User Removed Successfully", { autoClose: 3000 });
 
-      fetchData(1)
+      fetchData(1, perPage, '', '')
     } else {
       toast.error("User Removed Failed!", { autoClose: 3000 });
     }
   };
 
-  const actionDelete = async (id) => {
+  const actionDelete = async (id: number) => {
     setSelectedId(id);
     setDeleteModal(true);
   };
@@ -49,30 +49,30 @@ const UserList = () => {
   const columns = [
     {
       name: <Input className="form-check-input fs-15" type="checkbox" name="checkAll" value="option1" />,
+
       cell: () => (
         <input className="form-check-input fs-15" type="checkbox" name="checkAll" value="option1" />
       ),
     },
     {
       name: <span className='font-weight-bold fs-13'>Name</span>,
-      selector: row => row.name,
-      sortable: true,
+      selector: (row: any) => row.name,
       field: 'name'
     },
     {
       name: <span className='font-weight-bold fs-13'>Email</span>,
-      selector: row => row.email,
-      sortable: true,
+      selector: (row: any) => row.email,
       field: 'name'
     },
     {
       name: <span className='font-weight-bold fs-13'>Role</span>,
-      selector: row => <span class="badge bg-light text-body fs-12 fw-medium">{row.roles[0]?.name}</span>,
+      selector: (row: any) => <span className="badge bg-light text-body fs-12 fw-medium">{row.roles[0]?.name}</span>,
+      field: 'name'
     },
     {
       name: <span className='font-weight-bold fs-13'>Action</span>,
 
-      cell: (row) => {
+      cell: (row: any) => {
         return (
           <UncontrolledDropdown className="dropdown d-inline-block">
             <DropdownToggle className="btn btn-soft-secondary btn-sm" tag="button">
@@ -98,27 +98,27 @@ const UserList = () => {
   const [term, seterm] = useState('');
 
 
-  const handlePerPageChange = (newPerPage) => {
+  const handlePerPageChange = (newPerPage: React.SetStateAction<number>) => {
     setPerPage(newPerPage);
     fetchData(1, newPerPage, sort, term);
   };
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: number) => {
     fetchData(page, perPage, sort, term);
   };
 
-  const handleSearch = (term) => {
+  const handleSearch = (term: string) => {
 
     console.log(term)
     fetchData(1, perPage, sort, term);
   };
 
-  const handleSortChange = (column, sortDirection) => {
+  const handleSortChange = (column: any, sortDirection: any) => {
     const order = `${column.field},${sortDirection}`
     setSort(order)
-    fetchData(1, perPage, order)
+    fetchData(1, perPage, order, '')
   };
-  const fetchData = async (page, perPage, sort = '', term) => {
+  const fetchData = async (page: number, perPage: any, sort = '', term: string) => {
     const response = await listUser(page, perPage, sort, term)
 
     const user = await response.json()
@@ -133,10 +133,10 @@ const UserList = () => {
   };
 
   useEffect(() => {
-    fetchData(1, perPage, sort);
+    fetchData(1, perPage, sort, '');
   }, []);
 
-  const actionAdd = (id) => {
+  const actionAdd = () => {
     navigate(`/user/add`);
   };
 
