@@ -20,6 +20,7 @@ export interface UserData {
     id: number,
     name: string,
     email: string,
-    roles: RoleData[],
+    password?: string,
+    roles?: RoleData[],
     created_at?: string,
 }

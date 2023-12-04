@@ -191,7 +191,7 @@ const AccessList = () => {
 
                           {Object.keys(permissionData).map((group) => (
 
-                            <Col md={4} key={group} className='bg-primary-subtle '>
+                            <Col md={4} key={group} className=''>
                               <h3>{group}</h3>
                               {permissionData[group].map((permission: PermissionData) => {
 

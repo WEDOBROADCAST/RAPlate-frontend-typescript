@@ -18,7 +18,6 @@ const ProfileDropdown = () => {
     const user = useSelector(profiledropdownData);
     const [profilePhoto, setProfilePhoto] = useState('');
 
-
     interface Userdata {
         name: string,
         email: string
@@ -70,7 +69,7 @@ const ProfileDropdown = () => {
                         </Link>
                     </DropdownItem>
                     <DropdownItem className='p-0'>
-                        <Link to="/auth-lockscreen-basic" className="dropdown-item">
+                        <Link to="/lockscreen" className="dropdown-item">
                             <i
                                 className="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span className="align-middle">Lock screen</span>
                         </Link>
