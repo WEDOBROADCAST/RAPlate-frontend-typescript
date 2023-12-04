@@ -14,10 +14,10 @@ const PermissionList = () => {
 
   const navigate = useNavigate();
 
-  const actionEdit = (id) => {
+  const actionEdit = (id: number) => {
     navigate(`/permission/${id}/edit`);
   };
-  const actionView = (id) => {
+  const actionView = (id: number) => {
     navigate(`/permission/${id}/view`);
   };
 
@@ -25,7 +25,7 @@ const PermissionList = () => {
 
   //delete Conatct
   const [deleteModal, setDeleteModal] = useState(false);
-  const [selectedId, setSelectedId] = useState('');
+  const [selectedId, setSelectedId] = useState(0);
 
   const handleDelete = async () => {
 
@@ -35,16 +35,17 @@ const PermissionList = () => {
     if (response.status === 200) {
       toast.success("Permission Removed Successfully", { autoClose: 3000 });
 
-      fetchData(1)
+      fetchData(1, perPage, '', '')
     } else {
       toast.error("Permission Removed Failed!", { autoClose: 3000 });
     }
   };
 
-  const actionDelete = async (id) => {
+  const actionDelete = async (id: number) => {
     setSelectedId(id);
     setDeleteModal(true);
   };
+
 
   const columns = [
     {
@@ -55,21 +56,21 @@ const PermissionList = () => {
     },
     {
       name: <span className='font-weight-bold fs-13'>Name</span>,
-      selector: row => row.name,
+      selector: (row: any) => row.name,
       sortable: true,
       field: 'name'
 
     },
     {
       name: <span className='font-weight-bold fs-13'>Description</span>,
-      selector: row => row.description,
+      selector: (row: any) => row.description,
       sortable: true,
       field: 'description'
     },
     {
       name: <span className='font-weight-bold fs-13'>Action</span>,
 
-      cell: (row) => {
+      cell: (row: any) => {
         return (
           <UncontrolledDropdown className="dropdown d-inline-block">
             <DropdownToggle className="btn btn-soft-secondary btn-sm" tag="button">
@@ -94,26 +95,26 @@ const PermissionList = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const handlePerPageChange = (newPerPage) => {
+  const handlePerPageChange = (newPerPage: number) => {
     setPerPage(newPerPage);
     fetchData(1, newPerPage, sort, term);
   };
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: any) => {
     fetchData(page, perPage, sort, term);
   };
 
-  const handleSearch = (term) => {
+  const handleSearch = (term: string) => {
     fetchData(1, perPage, sort, term);
   };
 
-  const handleSortChange = (column, sortDirection) => {
+  const handleSortChange = (column: any, sortDirection: any) => {
     const order = `${column.field},${sortDirection}`
     setSort(order)
-    fetchData(1, perPage, order)
+    fetchData(1, perPage, order, '')
   };
 
-  const fetchData = async (page, perPage, sort = '', term) => {
+  const fetchData = async (page: number, perPage: number | undefined, sort = '', term: string | undefined) => {
     const response = await listPermission(page, perPage, sort, term)
 
     const permission = await response.json()
@@ -128,10 +129,10 @@ const PermissionList = () => {
   };
 
   useEffect(() => {
-    fetchData(1, perPage, sort);
+    fetchData(1, perPage, sort, '');
   }, []);
 
-  const actionAdd = (id) => {
+  const actionAdd = (id: any) => {
     navigate(`/permission/add`);
   };
 

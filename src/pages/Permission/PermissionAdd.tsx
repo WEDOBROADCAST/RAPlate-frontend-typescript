@@ -1,63 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
-import { Button, Card, CardBody, CardHeader, Col, Container, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Container, Row, Input, Button, FormGroup, Label } from 'reactstrap';
 import BreadCrumb from '../../Components/Common/BreadCrumb';
+import { useNavigate } from "react-router-dom";
 
-import { ErrorMessage, Field, Formik, Form } from 'formik';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { updatePermission, permissionDetail } from '../../helpers/api';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { createPermission } from '../../helpers/api';
+
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
   description: Yup.string().required('Description is required'),
 });
 
+const PermissionAdd = () => {
 
-const PermissionEdit = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
-
-  const [permissionData, setPermissionData] = useState({
+  const initialValues = {
     name: '',
     description: '',
-  });
-
-  const getPermission = async () => {
-    const response = await permissionDetail(id);
-
-    if (response.status === 200) {
-      const data = await response.json();
-
-      window.formik.setValues({
-        name: data.permission.name,
-        description: data.permission.description,
-      });
-    } else {
-      navigate('/permission');
-      toast("Data not found", { position: "top-center", hideProgressBar: true, className: 'bg-danger text-white' });
-    }
   };
 
-  useEffect(() => {
-    getPermission();
-  }, [id]);
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    const save = await updatePermission(id, values);
-
-    if (save.status !== 200) {
-      toast.error("Permission Validation failed", { autoClose: 3000 });
+  const handleSubmit = async (values: any, { setSubmitting, resetForm }: any) => {
+    const save = await createPermission(values);
+    if (save.status != 200) {
+      toast.error("Validation failed", { autoClose: 3000 })
     } else {
-      toast.success("Permission Updated Successfully", { autoClose: 3000 });
+      toast.success("Permission Created Successfully", { autoClose: 3000 });
+
+      resetForm();
       setSubmitting(false);
       navigate('/permission');
     }
+
   };
 
   document.title = "";
-
   return (
     <React.Fragment>
       <ToastContainer />
@@ -73,10 +53,9 @@ const PermissionEdit = () => {
                 </CardHeader>
                 <CardBody>
                   <Formik
-                    initialValues={permissionData}
+                    initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
-                    innerRef={(formik) => (window.formik = formik)}
                   >
                     {({ isSubmitting }) => (
                       <Form>
@@ -87,33 +66,41 @@ const PermissionEdit = () => {
                             name="name"
                             id="name"
                             as={Input}
+                            invalid={!!(isSubmitting && <ErrorMessage name="name" />)}
                           />
-                          <ErrorMessage name="name" component="div" className="text-danger" />
+                          <ErrorMessage name="name">
+                            {(msg) => <div className="text-danger">{msg}</div>}
+                          </ErrorMessage>
                         </FormGroup>
                         <FormGroup>
                           <Label for="description">Description</Label>
                           <Field
-                            type="description"
+                            type="input"
                             name="description"
                             id="description"
                             as={Input}
+                            invalid={!!(isSubmitting && <ErrorMessage name="description" />)}
                           />
-                          <ErrorMessage name="description" component="div" className="text-danger" />
+                          <ErrorMessage name="description">
+                            {(msg) => <div className="text-danger">{msg}</div>}
+                          </ErrorMessage>
                         </FormGroup>
                         <Button type="submit" color="primary" disabled={isSubmitting}>
-                          {isSubmitting ? 'Update Permission...' : 'Update Permission'}
+                          {isSubmitting ? 'Creating Permission...' : 'Create Permission'}
                         </Button>
                       </Form>
                     )}
                   </Formik>
+
                 </CardBody>
               </Card>
             </Col>
           </Row>
+
         </Container>
       </div>
     </React.Fragment>
   );
 };
 
-export default PermissionEdit;
+export default PermissionAdd;

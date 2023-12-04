@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardBody, CardHeader, Col, Container, Row, Input, Button, FormGroup, Label } from 'reactstrap';
-import BreadCrumb from '../../Components/Common/BreadCrumb';
+import { Card, CardBody, Col, Container, Row } from 'reactstrap';
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
-import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { updatePermission, permissionDetail } from '../../helpers/api';
-import avatar from "../../assets/images/users/avatar-1.jpg";
-
+import { permissionDetail } from '../../helpers/api';
 
 
 const PermissionView = () => {
