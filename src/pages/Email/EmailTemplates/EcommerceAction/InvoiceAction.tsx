@@ -28,7 +28,7 @@ function InvoiceAction() {
                                                             <tbody>
                                                                 <tr style={{ fontFamily: "Roboto, sans-serif", boxSizing: "border-box", fontSize: "14px", margin: 0 }}>
                                                                     <td className="content-block" style={{ fontFamily: "Roboto, sans-serif", boxSizing: "border-box", fontSize: "24px", verticalAlign: "top", margin: 0, padding: "0 0 10px", textAlign: "center" }} valign="top">
-                                                                        <h4 style={{ fontFamily: "Roboto, sans-serif", marginBottom: "10px", fontWeight: 600, letterSpacing:"-0.7px"}}>Your order has been placed</h4>
+                                                                        <h4 style={{ fontFamily: "Roboto, sans-serif", marginBottom: "10px", fontWeight: 600, letterSpacing: "-0.7px" }}>Your order has been placed</h4>
                                                                     </td>
                                                                 </tr>
                                                                 <tr style={{ fontFamily: "Roboto, sans-serif", boxSizing: "border-box", fontSize: "14px", margin: 0 }}>

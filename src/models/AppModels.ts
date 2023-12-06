@@ -23,4 +23,5 @@ export interface UserData {
     password?: string,
     roles?: RoleData[],
     created_at?: string,
+    profile_photo?: string,
 }

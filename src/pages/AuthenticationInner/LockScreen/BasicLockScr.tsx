@@ -7,7 +7,7 @@ import ParticlesAuth from "../ParticlesAuth";
 import logoLight from "../../../assets/images/logo-light.png";
 import avatar1 from "../../../assets/images/users/avatar-1.jpg";
 import { ToastContainer, toast } from 'react-toastify';
-import { getUserSession, sign } from '../../../helpers/api';
+import { getProfilePhoto, getUserSession, sign } from '../../../helpers/api';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -23,6 +23,7 @@ const BasicLockScreen = () => {
         name: '',
         email: '',
         password: '',
+        profile_photo: '',
         id: 0,
     })
 
@@ -32,7 +33,9 @@ const BasicLockScreen = () => {
         setUserData({
             name: user.data.email,
             id: user.data.id,
-            email: user.data.email
+            email: user.data.email,
+            profile_photo: user.data.profile_photo,
+
         });
 
         sessionStorage.setItem("lockscreen", "1");
@@ -100,7 +103,7 @@ const BasicLockScreen = () => {
                                                     <p className="text-muted">Enter your password to unlock the screen!</p>
                                                 </div>
                                                 <div className="user-thumb text-center">
-                                                    <img src={avatar1} className="rounded-circle img-thumbnail avatar-lg" alt="thumbnail" />
+                                                    <img src={getProfilePhoto(userData.profile_photo)} className="rounded-circle img-thumbnail avatar-lg" alt="thumbnail" />
                                                     <h5 className="font-size-15 mt-3">{userData.name}</h5>
                                                 </div>
                                                 <div className="p-2 mt-4">

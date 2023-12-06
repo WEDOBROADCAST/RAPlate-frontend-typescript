@@ -10,7 +10,7 @@ import smallImage3 from '../../../assets/images/small/img-3.jpg';
 import smallImage4 from '../../../assets/images/small/img-4.jpg';
 import smallImage5 from '../../../assets/images/small/img-5.jpg';
 
-import { SearchGallery, news, video, swiper  } from '../../../common/data';
+import { SearchGallery, news, video, swiper } from '../../../common/data';
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -18,10 +18,10 @@ import { Autoplay } from "swiper/modules";
 const SearchResults = () => {
 
     // SwiperCore.use([Autoplay]);
-  
+
     //Tab 
     const [activeTab, setActiveTab] = useState('1');
-    const toggleTab = (tab : any) => {
+    const toggleTab = (tab: any) => {
         if (activeTab !== tab) {
             setActiveTab(tab);
         }
@@ -40,12 +40,12 @@ const SearchResults = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
-document.title="Search Results | Velzon - React Admin & Dashboard Template";
+    document.title = "Search Results | Velzon - React Admin & Dashboard Template";
 
     return (
         <React.Fragment>
             <div className="page-content">
-                
+
                 <div className="container-fluid">
                     <BreadCrumb title="Search Results" pageTitle="Pages" />
                     <Row>

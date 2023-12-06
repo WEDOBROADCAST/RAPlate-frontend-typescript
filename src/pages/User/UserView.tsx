@@ -4,8 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { userDetail } from '../../helpers/api';
-import avatar from "../../assets/images/users/avatar-1.jpg";
+import { getProfilePhoto, userDetail } from '../../helpers/api';
 
 
 
@@ -20,6 +19,8 @@ const UserEdit = () => {
     email: '',
     password: '',
     id: '',
+    profile_photo: '',
+
   })
 
   const getUser = async () => {
@@ -32,6 +33,7 @@ const UserEdit = () => {
         name: data.user.email,
         id: data.user.id,
         email: data.user.email,
+        profile_photo: data.user.profile_photo,
         password: ''
       });
     }
@@ -59,7 +61,7 @@ const UserEdit = () => {
                   <div className="d-flex">
                     <div className="mx-3">
                       <img
-                        src={avatar}
+                        src={getProfilePhoto(userData.profile_photo)}
                         alt=""
                         className="avatar-md rounded-circle img-thumbnail"
                       />

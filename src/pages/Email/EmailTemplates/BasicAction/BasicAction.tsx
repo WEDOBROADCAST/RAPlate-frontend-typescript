@@ -8,10 +8,10 @@ import avatar03 from "../../../../assets/images/users/avatar-3.jpg";
 
 const BasicAction = () => {
 
-    function changeBackground(e:any) {
+    function changeBackground(e: any) {
         e.target.style.background = "#099885";
     }
-    function bgColor(e:any) {
+    function bgColor(e: any) {
         e.target.style.background = "#0ab39c";
     }
     return (
@@ -54,7 +54,7 @@ const BasicAction = () => {
                                                                 </tr>
                                                                 <tr style={{ fontFamily: "Roboto, sans-serif", boxSizing: "border-box", fontSize: "15px", margin: 0 }}>
                                                                     <td className="content-block" style={{ fontFamily: "Roboto, sans-serif", color: "#878a99", boxSizing: "border-box", lineHeight: "1.5", fontSize: "15px", verticalAlign: "top", margin: 0, padding: "0 0 10px" }} valign="top">
-                                                                    I'm writing to let you know that I can't attend class for two weeks as I've had an accident and hurt my back. I'm afraid I also need to ask for an extension for next week's essay.
+                                                                        I'm writing to let you know that I can't attend class for two weeks as I've had an accident and hurt my back. I'm afraid I also need to ask for an extension for next week's essay.
                                                                     </td>
                                                                 </tr>
                                                                 <tr style={{ fontFamily: "Roboto, sans-serif", boxSizing: "border-box", fontSize: "14px", margin: 0 }}>

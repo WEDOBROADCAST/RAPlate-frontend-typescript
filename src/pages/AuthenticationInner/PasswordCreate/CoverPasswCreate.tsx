@@ -12,9 +12,9 @@ const CoverPasswCreate = () => {
     document.title = "Create New Password | Velzon - React Admin & Dashboard Template";
 
     const [passwordShow, setPasswordShow] = useState<boolean>(false);
-    const [confrimPasswordShow, setConfrimPasswordShow] = useState<boolean>(false);   
+    const [confrimPasswordShow, setConfrimPasswordShow] = useState<boolean>(false);
 
-    const validation :any= useFormik({
+    const validation: any = useFormik({
         enableReinitialize: true,
 
         initialValues: {
@@ -28,7 +28,7 @@ const CoverPasswCreate = () => {
                 .matches(RegExp('(.*[A-Z].*)'), 'At least uppercase letter')
                 .matches(RegExp('(.*[0-9].*)'), 'At least one number')
                 .required("This field is required"),
-                confirm_password: Yup.string()
+            confirm_password: Yup.string()
                 .oneOf([Yup.ref('password'), ""],)
                 .required('Confirm Password is required')
         }),
@@ -95,7 +95,7 @@ const CoverPasswCreate = () => {
                                                                     <FormFeedback type="invalid">{validation.errors.confrim_password}</FormFeedback>
                                                                 ) : null}
                                                                 <Button color="link" onClick={() => setConfrimPasswordShow(!confrimPasswordShow)} className="position-absolute end-0 top-0 text-decoration-none text-muted password-addon">
-                                                                <i className="ri-eye-fill align-middle"></i></Button>
+                                                                    <i className="ri-eye-fill align-middle"></i></Button>
                                                             </div>
                                                         </div>
 
@@ -134,7 +134,7 @@ const CoverPasswCreate = () => {
                         <Row>
                             <Col lg={12}>
                                 <div className="text-center">
-                                    <p className="mb-0">&copy; {new Date().getFullYear()} Velzon. Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                                    <p className="mb-0">&copy; {new Date().getFullYear()} . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                                 </div>
                             </Col>
                         </Row>

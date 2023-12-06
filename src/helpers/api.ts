@@ -25,8 +25,8 @@ async function apiRequest(url: any, method: string, bodyData = null) {
 }
 
 
-export function getProfilePhoto(filename: string | any[]) {
-    if (filename?.length) {
+export function getProfilePhoto(filename: string | any[] | undefined) {
+    if (filename?.length && typeof filename != 'undefined') {
         return `${config.api.API_URL}/uploads/${filename}`;
     } else {
         return 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'
