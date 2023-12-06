@@ -64,7 +64,7 @@ const AuditView = () => {
         <Container fluid>
           <BreadCrumb title="Audit View" pageTitle="Audit" />
           <Row>
-            <Col ms={6}>
+            <Col lg={6}>
               <Card>
                 <CardBody>
 

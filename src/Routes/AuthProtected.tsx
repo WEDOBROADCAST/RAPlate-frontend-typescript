@@ -7,10 +7,10 @@ import { useProfile } from "../Components/Hooks/UserHooks";
 
 import { logoutUser } from "../slices/auth/login/thunk";
 
-const AuthProtected = (props : any) =>{
-  const dispatch : any = useDispatch();
+const AuthProtected = (props: any) => {
+  const dispatch: any = useDispatch();
   const { userProfile, loading, token } = useProfile();
-  
+
   useEffect(() => {
     if (userProfile && !loading && token) {
       setAuthorization(token);
@@ -25,9 +25,34 @@ const AuthProtected = (props : any) =>{
 
   if (!userProfile && loading && !token) {
     return (
-      <Navigate to={{ pathname: "/login"}} />
+      <Navigate to={{ pathname: "/login" }} />
     );
   }
+
+
+  const hasPermission = userProfile.permissions.includes(props.requiredPermission);
+
+  if (userProfile.data.roles[0].slug !== 'admin') {
+    if (!hasPermission && (props.requiredPermission !== '')) {
+      return <Navigate to="/unauthorized" />;
+    }
+  }
+
+  const lock = sessionStorage.getItem('lockscreen')
+
+  if (lock === "1") {
+    return <Navigate to="/lockscreen" />;
+  }
+
+
+  const twofa = sessionStorage.getItem('twofa')
+
+  if (twofa !== '0') {
+    if (userProfile.data.enable2fa == '1') {
+      return <Navigate to="/2fa" />;
+    }
+  }
+
 
   return <>{props.children}</>;
 };
